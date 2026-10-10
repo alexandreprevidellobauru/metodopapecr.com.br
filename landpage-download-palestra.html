@@ -1,0 +1,1722 @@
+// redeployx
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+
+    // =====================================================
+    // PÁGINA DO MATERIAL
+    // =====================================================
+    if (
+      request.method === "GET" &&
+      (url.pathname === "/materialpalestra" ||
+       url.pathname === "/materialpalestra/")
+    ) {
+      return new Response(PAGINA_HTML, {
+        headers: {
+          "content-type": "text/html;charset=UTF-8",
+        },
+      });
+    }
+
+    // =====================================================
+    // ENVIO DO FORMULÁRIO
+    // =====================================================
+    if (
+      request.method === "POST" &&
+      url.pathname === "/api/materialpalestra"
+    ) {
+      try {
+        const dados = await request.json();
+
+        const nome = String(dados.nome || "").trim();
+        const email = String(dados.email || "").trim();
+        const whatsapp = String(dados.whatsapp || "").trim();
+        const empresa = String(dados.empresa || "").trim();
+        const autorizacao = dados.autorizacao === true;
+
+        // ------------------------------
+        // Validações
+        // ------------------------------
+        if (!nome || !email || !whatsapp) {
+          return json(
+            {
+              success: false,
+              message: "Preencha nome, e-mail e WhatsApp.",
+            },
+            400
+          );
+        }
+
+        if (!validarEmail(email)) {
+          return json(
+            {
+              success: false,
+              message: "Informe um e-mail válido.",
+            },
+            400
+          );
+        }
+
+        if (!autorizacao) {
+          return json(
+            {
+              success: false,
+              message:
+                "É necessário autorizar o envio do material.",
+            },
+            400
+          );
+        }
+
+        if (!env.RESEND_API_KEY) {
+          console.error("RESEND_API_KEY não configurada.");
+
+          return json(
+            {
+              success: false,
+              message:
+                "O serviço de envio ainda não está configurado.",
+            },
+            500
+          );
+        }
+
+        // =====================================================
+        // 1. ENVIA MATERIAL PARA O PARTICIPANTE
+        // =====================================================
+
+        const emailParticipante = await fetch(
+          "https://api.resend.com/emails",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${env.RESEND_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify({
+              from:
+                env.EMAIL_REMETENTE ||
+                "PAPEC+R <material@mentoriapapecr.com.br>",
+
+              to: [email],
+
+              subject:
+                "Seu material da palestra PAPEC+R",
+
+              html: gerarEmailParticipante(nome, env),
+            }),
+          }
+        );
+
+        if (!emailParticipante.ok) {
+          const erro = await emailParticipante.text();
+
+          console.error(
+            "Erro Resend participante:",
+            erro
+          );
+
+          return json(
+            {
+              success: false,
+              message:
+                "Não foi possível enviar o material. Tente novamente.",
+            },
+            500
+          );
+        }
+
+        // =====================================================
+        // 2. ENVIA O CONTATO PARA VOCÊ
+        // =====================================================
+
+        if (env.EMAIL_ADMIN) {
+          const emailAdmin = await fetch(
+            "https://api.resend.com/emails",
+            {
+              method: "POST",
+
+              headers: {
+                Authorization: `Bearer ${env.RESEND_API_KEY}`,
+                "Content-Type": "application/json",
+              },
+
+              body: JSON.stringify({
+                from:
+                  env.EMAIL_REMETENTE ||
+                  "PAPEC+R <material@mentoriapapecr.com.br>",
+
+                to: [env.EMAIL_ADMIN],
+
+                subject:
+                  `Novo contato da palestra — ${nome}`,
+
+                html: gerarEmailAdmin({
+                  nome,
+                  email,
+                  whatsapp,
+                  empresa,
+                }),
+              }),
+            }
+          );
+
+          if (!emailAdmin.ok) {
+            console.error(
+              "Erro ao enviar notificação ao administrador:",
+              await emailAdmin.text()
+            );
+          }
+        }
+
+        // =====================================================
+        // RESPOSTA
+        // =====================================================
+
+        return json({
+          success: true,
+          message:
+            "Material enviado com sucesso!",
+        });
+      } catch (error) {
+        console.error(error);
+
+        return json(
+          {
+            success: false,
+            message:
+              "Ocorreu um erro. Tente novamente.",
+          },
+          500
+        );
+      }
+    }
+
+    return new Response("Página não encontrada", {
+      status: 404,
+    });
+  },
+};
+
+
+// =====================================================
+// VALIDAÇÃO DE E-MAIL
+// =====================================================
+
+function validarEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+
+// =====================================================
+// RESPOSTA JSON
+// =====================================================
+
+function json(data, status = 200) {
+  return new Response(
+    JSON.stringify(data),
+    {
+      status,
+
+      headers: {
+        "content-type":
+          "application/json;charset=UTF-8",
+      },
+    }
+  );
+}
+
+
+// =====================================================
+// E-MAIL PARA PARTICIPANTE
+// =====================================================
+
+function gerarEmailParticipante(nome, env) {
+
+  const linkMaterial =
+    env.LINK_MATERIAL ||
+    "https://www.mentoriapapecr.com.br/material-palestra.pdf";
+
+  return `
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+</head>
+
+<body style="
+margin:0;
+padding:0;
+background:#f4f6f8;
+font-family:Arial,Helvetica,sans-serif;
+color:#1e293b;
+">
+
+<table
+width="100%"
+cellspacing="0"
+cellpadding="0"
+style="padding:30px 15px;"
+>
+
+<tr>
+
+<td align="center">
+
+<table
+width="100%"
+cellspacing="0"
+cellpadding="0"
+style="
+max-width:600px;
+background:#ffffff;
+border-radius:16px;
+overflow:hidden;
+"
+>
+
+<tr>
+
+<td
+style="
+background:#0f172a;
+padding:32px;
+text-align:center;
+color:white;
+"
+>
+
+<div
+style="
+font-size:30px;
+font-weight:bold;
+"
+>
+PAPEC<span style="color:#f4b942;">+R</span>
+</div>
+
+<div
+style="
+margin-top:6px;
+font-size:14px;
+opacity:.85;
+"
+>
+Mentoria em Desenvolvimento Humano
+</div>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="padding:35px;">
+
+<h2
+style="
+margin-top:0;
+font-size:24px;
+"
+>
+Olá, ${escaparHtml(nome)}!
+</h2>
+
+<p
+style="
+font-size:16px;
+line-height:1.7;
+"
+>
+Foi muito bom ter você conosco na palestra.
+</p>
+
+<p
+style="
+font-size:16px;
+line-height:1.7;
+"
+>
+Preparei este material para que você possa
+revisitar os principais conceitos apresentados
+e, principalmente, transformar conhecimento
+em ação.
+</p>
+
+
+<div style="text-align:center;margin:35px 0;">
+
+<a
+href="${linkMaterial}"
+target="_blank"
+style="
+display:inline-block;
+background:#f4b942;
+color:#111827;
+font-weight:bold;
+font-size:16px;
+padding:16px 28px;
+border-radius:9px;
+text-decoration:none;
+"
+>
+
+BAIXAR MATERIAL DA PALESTRA
+
+</a>
+
+</div>
+
+
+<p
+style="
+font-size:15px;
+line-height:1.7;
+color:#475569;
+"
+>
+Lembre-se:
+</p>
+
+<p
+style="
+font-size:19px;
+line-height:1.6;
+font-weight:bold;
+text-align:center;
+"
+>
+
+Propósito → Análise → Planejamento →
+Execução → Checagem → + Recompensa
+
+</p>
+
+
+<p
+style="
+font-size:16px;
+line-height:1.7;
+margin-top:30px;
+"
+>
+Um grande abraço,<br><br>
+
+<strong>Alexandre Previdello</strong><br>
+
+Método PAPEC+R
+
+</p>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td
+style="
+padding:20px;
+background:#f8fafc;
+text-align:center;
+font-size:12px;
+color:#64748b;
+"
+>
+
+Método PAPEC+R • Mentoria em Desenvolvimento Humano
+
+</td>
+
+</tr>
+
+</table>
+
+</td>
+
+</tr>
+
+</table>
+
+</body>
+
+</html>
+`;
+}
+
+
+// =====================================================
+// E-MAIL PARA VOCÊ
+// =====================================================
+
+function gerarEmailAdmin(dados) {
+
+  return `
+
+<h2>Novo contato — Material da Palestra PAPEC+R</h2>
+
+<p>
+Uma pessoa solicitou o material da palestra.
+</p>
+
+<hr>
+
+<p>
+<strong>Nome:</strong><br>
+${escaparHtml(dados.nome)}
+</p>
+
+<p>
+<strong>E-mail:</strong><br>
+${escaparHtml(dados.email)}
+</p>
+
+<p>
+<strong>WhatsApp:</strong><br>
+${escaparHtml(dados.whatsapp)}
+</p>
+
+<p>
+<strong>Empresa / Instituição:</strong><br>
+${escaparHtml(dados.empresa || "Não informado")}
+</p>
+
+<hr>
+
+<p>
+Origem: Material da Palestra PAPEC+R
+</p>
+
+`;
+
+}
+
+
+// =====================================================
+// SEGURANÇA HTML
+// =====================================================
+
+function escaparHtml(valor) {
+
+  return String(valor)
+
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+// =====================================================
+// HTML DA LANDING PAGE
+// =====================================================
+
+const PAGINA_HTML = `
+
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+/>
+
+<title>
+Material da Palestra | Método PAPEC+R
+</title>
+
+<meta
+name="description"
+content="Receba o material complementar da palestra Método PAPEC+R."
+/>
+
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+
+  margin: 0;
+
+  font-family:
+    Inter,
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background:
+    linear-gradient(
+      145deg,
+      #07111f 0%,
+      #0f223c 55%,
+      #142b49 100%
+    );
+
+  color: #ffffff;
+
+  min-height: 100vh;
+
+}
+
+
+.page {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 40px 20px;
+
+}
+
+
+.container {
+
+  width: 100%;
+
+  max-width: 1050px;
+
+  display: grid;
+
+  grid-template-columns: 1fr 480px;
+
+  gap: 60px;
+
+  align-items: center;
+
+}
+
+
+/* ============================
+   APRESENTAÇÃO
+============================ */
+
+.brand {
+
+  font-size: 38px;
+
+  font-weight: 800;
+
+  letter-spacing: -1px;
+
+  margin-bottom: 32px;
+
+}
+
+
+.brand span {
+
+  color: #f4b942;
+
+}
+
+
+.tag {
+
+  display: inline-block;
+
+  padding: 8px 14px;
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  background: rgba(255,255,255,.06);
+
+  border-radius: 100px;
+
+  font-size: 13px;
+
+  margin-bottom: 22px;
+
+}
+
+h1 {
+  font-size: 43px;
+  line-height: 1.08;
+  margin: 0 0 22px;
+  letter-spacing: -1.5px;
+  max-width: 570px;
+}
+
+
+.destaque {
+
+  color: #f4b942;
+
+}
+
+
+.intro {
+
+  color: #cbd5e1;
+
+  font-size: 18px;
+
+  line-height: 1.7;
+
+  max-width: 530px;
+
+}
+
+.conceitos {
+
+  margin-top: 30px;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+
+}
+
+.conceito-item {
+  min-height: 92px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+
+.conceito-item strong {
+  display: block;
+  color: #f4b942;
+  font-size: 14px;
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+
+.conceito-item span {
+  display: block;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.conceito-icone {
+
+  width: 42px;
+
+  height: 42px;
+
+  min-width: 42px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #f4b942;
+
+  color: #0f172a;
+
+  font-size: 22px;
+
+  font-weight: bold;
+
+}
+
+
+.conceito-item strong {
+
+  display: block;
+
+  color: #f4b942;
+
+  font-size: 15px;
+
+  margin-bottom: 4px;
+
+}
+
+
+.conceito-item span {
+
+  display: block;
+
+  color: #e2e8f0;
+
+  font-size: 13px;
+
+  line-height: 1.35;
+
+}
+
+.metodo {
+
+  margin-top: 32px;
+
+  display: flex;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+
+}
+
+
+.metodo-item {
+
+  font-size: 12px;
+
+  padding: 8px 11px;
+
+  border-radius: 6px;
+
+  background: rgba(255,255,255,.08);
+
+  color: #e2e8f0;
+
+}
+
+
+/* ============================
+   FORMULÁRIO
+============================ */
+
+.card {
+
+  background: #ffffff;
+
+  color: #1e293b;
+
+  border-radius: 20px;
+
+  padding: 35px;
+
+  box-shadow:
+    0 30px 70px rgba(0,0,0,.28);
+
+}
+
+
+.card h2 {
+
+  font-size: 26px;
+
+  margin: 0 0 8px;
+
+}
+
+
+.card-subtitle {
+
+  color: #64748b;
+
+  line-height: 1.5;
+
+  font-size: 14px;
+
+  margin-bottom: 26px;
+
+}
+
+
+.campo {
+
+  margin-bottom: 16px;
+
+}
+
+
+label {
+
+  display: block;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  margin-bottom: 7px;
+
+  color: #334155;
+
+}
+
+
+input {
+
+  width: 100%;
+
+  height: 50px;
+
+  border-radius: 8px;
+
+  border: 1px solid #cbd5e1;
+
+  padding: 0 14px;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition: .2s;
+
+}
+
+
+input:focus {
+
+  border-color: #f4b942;
+
+  box-shadow:
+    0 0 0 3px rgba(244,185,66,.15);
+
+}
+
+
+.consentimento {
+
+  display: flex;
+
+  gap: 10px;
+
+  align-items: flex-start;
+
+  margin: 20px 0;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+}
+
+
+.consentimento input {
+
+  width: 17px;
+
+  height: 17px;
+
+  flex: 0 0 auto;
+
+  margin-top: 2px;
+
+}
+
+
+button {
+
+  border: 0;
+
+  width: 100%;
+
+  min-height: 54px;
+
+  border-radius: 9px;
+
+  padding: 13px;
+
+  background: #f4b942;
+
+  color: #111827;
+
+  font-size: 15px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: .2s;
+
+}
+
+
+button:hover {
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 18px rgba(244,185,66,.3);
+
+}
+
+
+button:disabled {
+
+  opacity: .65;
+
+  cursor: wait;
+
+  transform: none;
+
+}
+
+
+.privacidade {
+
+  text-align: center;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+
+  margin-top: 16px;
+
+}
+
+
+/* ============================
+   MENSAGENS
+============================ */
+
+.mensagem {
+
+  display: none;
+
+  margin-top: 18px;
+
+  padding: 12px;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+
+}
+
+
+.mensagem.erro {
+
+  display: block;
+
+  background: #fee2e2;
+
+  color: #991b1b;
+
+}
+
+
+.mensagem.sucesso {
+
+  display: block;
+
+  background: #dcfce7;
+
+  color: #166534;
+
+}
+
+
+/* ============================
+   TELA SUCESSO
+============================ */
+
+.sucesso-box {
+
+  display: none;
+
+  text-align: center;
+
+  padding: 10px 0;
+
+}
+
+
+.check {
+
+  width: 70px;
+
+  height: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #dcfce7;
+
+  color: #16a34a;
+
+  font-size: 32px;
+
+  margin:
+    0 auto
+    22px;
+
+}
+
+
+.sucesso-box h2 {
+
+  font-size: 27px;
+
+}
+
+
+.sucesso-box p {
+
+  color: #64748b;
+
+  line-height: 1.7;
+
+}
+
+
+/* ============================
+   RESPONSIVO
+============================ */
+
+@media(max-width:850px) {
+
+  .conceitos {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .conceito-item {
+
+    min-height: auto;
+
+  }
+
+  .page {
+
+    align-items: flex-start;
+
+    padding-top: 30px;
+
+  }
+
+  .container {
+
+    grid-template-columns: 1fr;
+
+    gap: 35px;
+
+    max-width: 550px;
+
+  }
+
+  h1 {
+
+    font-size: 39px;
+
+  }
+
+  .brand {
+
+    font-size: 30px;
+
+    margin-bottom: 25px;
+
+  }
+
+  .intro {
+
+    font-size: 16px;
+
+  }
+
+}
+
+
+@media(max-width:500px) {
+
+  .page {
+
+    padding: 25px 15px;
+
+  }
+
+  h1 {
+
+    font-size: 35px;
+
+  }
+
+  .card {
+
+    padding: 26px 20px;
+
+    border-radius: 15px;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+<div class="container">
+
+
+<!-- =================================
+     APRESENTAÇÃO
+================================= -->
+
+<section>
+
+<div class="brand">
+
+PAPEC<span>+R</span>
+
+</div>
+
+
+<div class="tag">
+
+MATERIAL EXCLUSIVO DA PALESTRA
+
+</div>
+
+
+
+<h1>
+
+Quem aprende a
+<span class="destaque">planejar</span>
+a própria vida, tende a
+<span class="destaque">planejar melhor</span>
+o próprio trabalho.
+
+</h1>
+
+
+<p class="intro">
+
+Preencha seus dados e receba gratuitamente
+em seu e-mail o material complementar da palestra
+
+<strong>
+Método PAPEC+R – Mentoria em Desenvolvimento Humano.
+</strong>
+
+</p>
+
+
+<div class="conceitos">
+
+  <div class="conceito-item">
+
+    <div class="conceito-icone">
+      ◎
+    </div>
+
+    <div>
+      <strong>Clareza</strong>
+      <span>gera direção.</span>
+    </div>
+
+  </div>
+
+
+  <div class="conceito-item">
+
+    <div class="conceito-icone">
+      ◇
+    </div>
+
+    <div>
+      <strong>Direção</strong>
+      <span>gera ação.</span>
+    </div>
+
+  </div>
+
+
+  <div class="conceito-item">
+
+    <div class="conceito-icone">
+      ↗
+    </div>
+
+    <div>
+      <strong>Ação consistente</strong>
+      <span>gera evolução.</span>
+    </div>
+
+  </div>
+
+</div>
+
+</p>
+
+
+<div class="metodo">
+
+<div class="metodo-item">
+P • Propósito
+</div>
+
+<div class="metodo-item">
+A • Análise
+</div>
+
+<div class="metodo-item">
+P • Planejamento
+</div>
+
+<div class="metodo-item">
+E • Execução
+</div>
+
+<div class="metodo-item">
+C • Checagem
+</div>
+
+<div class="metodo-item">
++R • Recompensa
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+     FORMULÁRIO
+================================= -->
+
+<section class="card">
+
+
+<div id="areaFormulario">
+
+
+<h2>
+Receba seu material
+</h2>
+
+
+<div class="card-subtitle">
+
+Informe seus dados abaixo.
+O material será enviado diretamente para seu e-mail.
+
+</div>
+
+
+<form id="formMaterial">
+
+
+<div class="campo">
+
+<label for="nome">
+Nome completo *
+</label>
+
+<input
+type="text"
+id="nome"
+name="nome"
+placeholder="Como podemos chamar você?"
+required
+/>
+
+</div>
+
+
+<div class="campo">
+
+<label for="email">
+E-mail *
+</label>
+
+<input
+type="email"
+id="email"
+name="email"
+placeholder="seuemail@exemplo.com"
+required
+/>
+
+</div>
+
+
+<div class="campo">
+
+<label for="whatsapp">
+WhatsApp *
+</label>
+
+<input
+type="tel"
+id="whatsapp"
+name="whatsapp"
+placeholder="(14) 99999-9999"
+required
+/>
+
+</div>
+
+
+<div class="campo">
+
+<label for="empresa">
+Empresa / Instituição
+</label>
+
+<input
+type="text"
+id="empresa"
+name="empresa"
+placeholder="Opcional"
+/>
+
+</div>
+
+
+
+<div class="consentimento">
+
+<input
+type="checkbox"
+id="autorizacao"
+required
+/>
+
+<label for="autorizacao">
+
+Autorizo o envio do material da palestra
+e de conteúdos relacionados ao Método PAPEC+R.
+
+</label>
+
+</div>
+
+
+
+<button
+type="submit"
+id="botaoEnviar"
+>
+
+RECEBER MATERIAL DA PALESTRA
+
+</button>
+
+
+<div
+id="mensagem"
+class="mensagem"
+></div>
+
+
+<div class="privacidade">
+
+Seus dados serão utilizados para envio
+do material e comunicação relacionada
+ao Método PAPEC+R.
+
+</div>
+
+
+</form>
+
+
+</div>
+
+
+<!-- =================================
+     SUCESSO
+================================= -->
+
+
+<div
+id="areaSucesso"
+class="sucesso-box"
+>
+
+
+<div class="check">
+✓
+</div>
+
+
+<h2>
+Material enviado!
+</h2>
+
+
+<p>
+
+Confira sua caixa de entrada.
+
+<br><br>
+
+Enviamos o material da palestra
+para o e-mail informado.
+
+</p>
+
+
+<p>
+
+<strong>
+Obrigado por participar desse momento conosco.
+</strong>
+
+</p>
+
+
+</div>
+
+
+</section>
+
+
+</div>
+
+</div>
+
+
+
+<script>
+
+
+const form =
+  document.getElementById("formMaterial");
+
+const botao =
+  document.getElementById("botaoEnviar");
+
+const mensagem =
+  document.getElementById("mensagem");
+
+const areaFormulario =
+  document.getElementById("areaFormulario");
+
+const areaSucesso =
+  document.getElementById("areaSucesso");
+
+
+// =====================================
+// MÁSCARA WHATSAPP
+// =====================================
+
+const whatsapp =
+  document.getElementById("whatsapp");
+
+
+whatsapp.addEventListener(
+  "input",
+  function() {
+
+    let valor =
+      this.value.replace(/\\D/g, "");
+
+    valor =
+      valor.substring(0, 11);
+
+
+    if (valor.length > 10) {
+
+      valor =
+        valor.replace(
+          /^(\\d{2})(\\d{5})(\\d{4})/,
+          "($1) $2-$3"
+        );
+
+    }
+
+    else if (valor.length > 6) {
+
+      valor =
+        valor.replace(
+          /^(\\d{2})(\\d{4})(\\d+)/,
+          "($1) $2-$3"
+        );
+
+    }
+
+    else if (valor.length > 2) {
+
+      valor =
+        valor.replace(
+          /^(\\d{2})(\\d+)/,
+          "($1) $2"
+        );
+
+    }
+
+    else if (valor.length > 0) {
+
+      valor =
+        valor.replace(
+          /^(\\d*)/,
+          "($1"
+        );
+
+    }
+
+
+    this.value = valor;
+
+  }
+);
+
+
+// =====================================
+// ENVIO
+// =====================================
+
+form.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+
+    mensagem.className =
+      "mensagem";
+
+    mensagem.innerHTML =
+      "";
+
+
+    botao.disabled = true;
+
+    botao.innerHTML =
+      "ENVIANDO MATERIAL...";
+
+
+    const dados = {
+
+      nome:
+        document
+          .getElementById("nome")
+          .value,
+
+      email:
+        document
+          .getElementById("email")
+          .value,
+
+      whatsapp:
+        document
+          .getElementById("whatsapp")
+          .value,
+
+      empresa:
+        document
+          .getElementById("empresa")
+          .value,
+
+      autorizacao:
+        document
+          .getElementById("autorizacao")
+          .checked
+
+    };
+
+
+    try {
+
+
+      const resposta =
+        await fetch(
+          "/api/materialpalestra",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify(dados)
+
+          }
+        );
+
+
+      const retorno =
+        await resposta.json();
+
+
+      if (!resposta.ok) {
+
+        throw new Error(
+          retorno.message ||
+          "Não foi possível enviar."
+        );
+
+      }
+
+
+      areaFormulario.style.display =
+        "none";
+
+      areaSucesso.style.display =
+        "block";
+
+
+    }
+
+    catch(error) {
+
+
+      mensagem.className =
+        "mensagem erro";
+
+      mensagem.innerHTML =
+        error.message;
+
+
+      botao.disabled =
+        false;
+
+      botao.innerHTML =
+        "RECEBER MATERIAL DA PALESTRA";
+
+    }
+
+
+  }
+);
+
+
+</script>
+
+
+</body>
+
+</html>
+
+`;

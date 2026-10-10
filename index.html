@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta content="M&eacute;todo PAPEC+R &mdash; Desenvolvimento humano com prop&oacute;sito, consci&ecirc;ncia, dire&ccedil;&atilde;o e a&ccedil;&atilde;o. Conhe&ccedil;a a Mentoria PAPEC+R e as palestras de Alexandre Soubihe Previdello." name="description"/>
+  <meta content="#0d3f28" name="theme-color"/>
+  <title>
+   M&eacute;todo PAPEC+R | Alexandre Soubihe Previdello
+  </title>
+  <style>
+   :root {
+       --navy:#0c1e63;
+       --blue:#164ec7;
+       --green:#0c5a2e;
+       --green-2:#138a46;
+       --orange:#ff4d10;
+       --ink:#14213d;
+       --muted:#5b6478;
+       --soft:#f5f8f7;
+       --line:#dbe4df;
+       --white:#ffffff;
+       --shadow:0 18px 50px rgba(20,33,61,.10);
+       --radius:24px;
+       --max:1180px;
+     }
+      *{
+box-sizing:border-box}
+     html{
+scroll-behavior:smooth}
+     body{
+       margin:0;
+       font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+       color:var(--ink);
+       background:#fff;
+       line-height:1.55;
+     }
+     a{
+color:inherit;
+text-decoration:none}
+     img{
+max-width:100%;
+display:block}
+     .container{
+width:min(var(--max),calc(100% - 40px));
+margin:auto}
+      .topbar{
+       position:sticky;
+top:0;
+z-index:50;
+       background:rgba(255,255,255,.95);
+       backdrop-filter:blur(12px);
+       border-bottom:1px solid rgba(12,90,46,.08);
+     }
+     .nav{
+height:82px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:24px}
+     .brand{
+display:flex;
+align-items:center;
+gap:12px;
+font-weight:800;
+color:var(--green)}
+     .brand img{
+height:58px;
+width:auto;
+object-fit:contain}
+     .navlinks{
+display:flex;
+align-items:center;
+gap:24px;
+font-weight:700;
+font-size:14px;
+color:var(--navy)}
+     .navlinks a:hover{
+color:var(--orange)}
+      .btn{
+       display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+       min-height:48px;
+padding:0 22px;
+border-radius:999px;
+font-weight:800;
+       transition:.2s ease;
+border:1px solid transparent;
+cursor:pointer;
+     }
+     .btn:hover{
+transform:translateY(-1px)}
+     .btn-primary{
+background:var(--green);
+color:white;
+box-shadow:0 10px 24px rgba(12,90,46,.20)}
+     .btn-outline{
+border-color:#bfd3c6;
+color:var(--green);
+background:white}
+     .btn-orange{
+background:var(--orange);
+color:white}
+      .hero{
+position:relative;
+overflow:hidden;
+padding:72px 0 48px;
+background:linear-gradient(135deg,#fff 0%,#fbfdfc 55%,#f3f8f4 100%)}
+     .hero:before,.hero:after{
+content:"";
+position:absolute;
+border:1px solid rgba(22,78,199,.35);
+border-radius:50%;
+pointer-events:none}
+     .hero:before{
+width:520px;
+height:760px;
+right:-270px;
+top:-110px;
+transform:rotate(-12deg)}
+     .hero:after{
+width:420px;
+height:680px;
+right:-160px;
+top:-40px;
+border-color:rgba(12,90,46,.35)}
+     .hero-grid{
+display:grid;
+grid-template-columns:1.08fr .92fr;
+align-items:center;
+gap:56px}
+     .eyebrow{
+display:inline-flex;
+align-items:center;
+gap:8px;
+font-size:13px;
+font-weight:900;
+letter-spacing:.08em;
+text-transform:uppercase;
+color:var(--green);
+margin-bottom:18px}
+     .dot{
+width:8px;
+height:8px;
+border-radius:50%;
+background:var(--orange)}
+     h1{
+font-size:clamp(42px,5.5vw,72px);
+line-height:1.02;
+margin:0 0 22px;
+color:var(--navy);
+letter-spacing:-.035em}
+     h1 .green{
+color:var(--green)}
+     h1 .orange{
+color:var(--orange)}
+     .hero-copy{
+font-size:19px;
+color:var(--muted);
+max-width:660px;
+margin:0 0 28px}
+     .hero-name{
+margin:24px 0 6px;
+font-size:18px;
+font-weight:900;
+color:var(--navy)}
+     .hero-role{
+margin:0 0 28px;
+color:var(--green);
+font-weight:800}
+     .actions{
+display:flex;
+gap:12px;
+flex-wrap:wrap}
+     .hero-photo{
+position:relative;
+z-index:2}
+
+
+.hero .actions{
+  flex-wrap:nowrap;
+  gap:8px;
+}
+
+.hero .actions .btn{
+  padding:0 15px;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+     .photo-shell{
+position:relative;
+border-radius:46% 54% 45% 55% / 40% 42% 58% 60%;
+padding:12px;
+border:2px solid rgba(22,78,199,.32);
+background:white;
+box-shadow:var(--shadow)}
+     .photo-shell:after{
+content:"";
+position:absolute;
+inset:18px -12px -12px 18px;
+border:1px solid rgba(12,90,46,.45);
+border-radius:inherit;
+z-index:-1}
+     .photo-shell img{
+width:100%;
+aspect-ratio:4/5;
+object-fit:cover;
+border-radius:inherit;
+background:#eef3f0}
+     .mini-badge{
+position:absolute;
+left:-20px;
+bottom:18px;
+background:white;
+border:1px solid var(--line);
+box-shadow:var(--shadow);
+border-radius:18px;
+padding:14px 16px;
+font-weight:800;
+color:var(--green);
+max-width:220px}
+      section{
+padding:88px 0}
+     .section-soft{
+background:var(--soft)}
+     .section-head{
+text-align:center;
+max-width:820px;
+margin:0 auto 44px}
+     .kicker{
+font-weight:900;
+color:var(--orange);
+text-transform:uppercase;
+letter-spacing:.08em;
+font-size:13px;
+margin-bottom:10px}
+     h2{
+font-size:clamp(32px,4vw,48px);
+line-height:1.08;
+margin:0 0 14px;
+color:var(--navy);
+letter-spacing:-.025em}
+     .section-head p{
+margin:0;
+color:var(--muted);
+font-size:18px}
+      .method-grid{
+display:grid;
+grid-template-columns:.95fr 1.05fr;
+gap:36px;
+align-items:stretch}
+     .card{
+background:white;
+border:1px solid var(--line);
+border-radius:var(--radius);
+padding:30px;
+box-shadow:0 10px 30px rgba(20,33,61,.05)}
+     .method-card h3,.service h3,.area h3{
+margin:0 0 10px;
+color:var(--navy);
+font-size:22px}
+     .method-card p,.service p,.area p{
+margin:0;
+color:var(--muted)}
+.papec-highlight {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.papec-item {
+  text-align: center;
+}
+
+.papec-letter {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 10px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 900;
+  color: white;
+  background: var(--navy);
+  box-shadow: 0 10px 24px rgba(20, 33, 61, .10);
+}
+
+.papec-item:nth-child(2) .papec-letter,
+.papec-item:nth-child(6) .papec-letter {
+  background: var(--green);
+}
+
+.papec-item:nth-child(4) .papec-letter {
+  background: var(--orange);
+}
+
+.papec-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.papec-desc {
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.papec-letter.plus {
+  font-size: 24px;
+}
+
+@media (max-width: 980px) {
+  .papec-highlight {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .papec-highlight {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .papec-letter {
+    width: 64px;
+    height: 64px;
+    font-size: 24px;
+  }
+}
+.areas-premium {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.area-premium-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdfc 100%);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 26px 20px 24px;
+  min-height: 390px;
+  box-shadow: 0 12px 30px rgba(20, 33, 61, .06);
+  transition: .25s ease;
+}
+
+.area-premium-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: var(--green);
+}
+
+.area-premium-card:nth-child(2)::before {
+  background: var(--orange);
+}
+
+.area-premium-card:nth-child(3)::before {
+  background: var(--blue);
+}
+
+.area-premium-card:nth-child(4)::before {
+  background: var(--green);
+}
+
+.area-premium-card:nth-child(5)::before {
+  background: var(--orange);
+}
+
+.area-premium-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 42px rgba(20, 33, 61, .12);
+}
+
+.area-number {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  color: #aab3c4;
+}
+
+.area-icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  background: #eef6f1;
+  color: var(--green);
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.area-premium-card:nth-child(2) .area-icon {
+  background: #fff3ee;
+  color: var(--orange);
+}
+
+.area-premium-card:nth-child(3) .area-icon {
+  background: #eef3ff;
+  color: var(--blue);
+}
+
+.area-premium-card h3 {
+  margin: 0 0 14px;
+  color: var(--navy);
+  font-size: 19px;
+  line-height: 1.25;
+}
+
+.area-impact {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--green);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.area-premium-card:nth-child(2) .area-impact {
+  color: var(--orange);
+}
+
+.area-premium-card:nth-child(3) .area-impact {
+  color: var(--blue);
+}
+
+.area-premium-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+@media (max-width: 980px) {
+  .areas-premium {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .area-premium-card {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .areas-premium {
+    grid-template-columns: 1fr;
+  }
+
+  .area-premium-card {
+    padding: 24px 20px;
+  }
+}
+     .method-quote{
+display:flex;
+flex-direction:column;
+justify-content:center;
+background:linear-gradient(135deg,var(--navy),#102d8d);
+color:white}
+     .method-quote strong{
+font-size:30px;
+line-height:1.2}
+     .method-quote p{
+color:#dce5ff;
+font-size:17px;
+margin:14px 0 0}
+      .services{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:22px;
+max-width:850px;
+margin:auto}
+     .service{
+position:relative;
+overflow:hidden;
+background:white;
+border:1px solid var(--line);
+border-radius:var(--radius);
+padding:32px;
+box-shadow:var(--shadow)}
+     .service:before{
+content:"";
+position:absolute;
+width:90px;
+height:90px;
+border-radius:50%;
+right:-28px;
+top:-28px;
+background:rgba(255,77,16,.08)}
+     .icon{
+width:54px;
+height:54px;
+border-radius:16px;
+display:grid;
+place-items:center;
+margin-bottom:18px;
+background:#f1f6f2;
+color:var(--green);
+font-size:26px;
+font-weight:900}
+     .service ul{
+padding-left:18px;
+color:var(--muted);
+margin:16px 0 0}
+      .areas{
+display:grid;
+grid-template-columns:repeat(5,minmax(0,1fr));
+gap:14px}
+     .area{
+background:white;
+border:1px solid var(--line);
+border-radius:20px;
+padding:22px 18px;
+min-height:285px}
+     .area .icon{
+margin-bottom:16px}
+     .area h3{
+font-size:17px}
+     .area p{
+font-size:14px}
+      .evidence-grid{
+display:grid;
+grid-template-columns:1.05fr .95fr;
+gap:24px}
+     
+.testimonial-list {
+  display: grid;
+  gap: 16px;
+}
+     
+.testimonial {
+  position: relative;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 24px 24px 22px 30px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(20,33,61,.05);
+}
+     
+.testimonial blockquote {
+  margin: 0;
+  color: var(--navy);
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+     
+.testimonial footer {
+  margin-top: 14px;
+  color: var(--green);
+  font-size: 14px;
+  font-weight: 800;
+}
+     .media-card{
+background:white;
+border:1px solid var(--line);
+border-radius:24px;
+overflow:hidden;
+box-shadow:var(--shadow)}
+     
+.media-card img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background: #f3f4f4;
+}
+     .media-body{
+padding:22px}
+     .media-body h3{
+margin:0 0 6px;
+color:var(--navy)}
+     .media-body p{
+margin:0;
+color:var(--muted)}
+      .about{
+display:grid;
+grid-template-columns:.78fr 1.22fr;
+gap:40px;
+align-items:center}
+     .about-photo img{
+width:100%;
+aspect-ratio:4/5;
+object-fit:cover;
+border-radius:28px;
+background:#eef3f0;
+box-shadow:var(--shadow)}
+     .about-copy p{
+color:var(--muted);
+font-size:17px}
+     .chips{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-top:22px}
+     .chip{
+padding:10px 13px;
+border:1px solid var(--line);
+border-radius:999px;
+font-weight:800;
+font-size:13px;
+color:var(--green);
+background:white}
+      .free{
+background:linear-gradient(135deg,#f7fbf8,#ffffff);
+border:1px solid #d8e6dc;
+border-radius:32px;
+padding:42px;
+box-shadow:var(--shadow)}
+     .free-grid{
+display:grid;
+grid-template-columns:1.1fr .9fr;
+gap:28px;
+align-items:center}
+     .free h2{
+margin-bottom:12px}
+     .free p{
+color:var(--muted);
+font-size:17px}
+     .free-steps{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin:20px 0}
+     .free-step{
+border-radius:18px;
+background:white;
+border:1px solid var(--line);
+padding:20px}
+     .free-step strong{
+display:block;
+color:var(--green);
+font-size:18px;
+margin-bottom:4px}
+     .free-badge{
+display:grid;
+place-items:center;
+text-align:center;
+border-radius:26px;
+background:var(--navy);
+color:white;
+padding:34px;
+min-height:260px}
+     .free-badge strong{
+font-size:34px;
+line-height:1.15}
+     .free-badge span{
+display:block;
+color:#ffb199;
+margin-top:12px;
+font-weight:900}
+      .cta{
+padding:72px 0}
+     .cta-box{
+background:linear-gradient(135deg,var(--navy),#123aa9);
+border-radius:30px;
+padding:38px;
+color:white;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:24px}
+     .cta-box h2{
+color:white;
+margin:0 0 8px}
+     .cta-box p{
+margin:0;
+color:#dfe7ff}
+     .cta-actions{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+min-width:max-content}
+      footer{
+border-top:1px solid var(--line);
+padding:28px 0 42px;
+color:var(--muted);
+font-size:14px}
+     .footer-row{
+display:flex;
+justify-content:space-between;
+gap:20px;
+align-items:center;
+flex-wrap:wrap}
+      
+.testimonial::before {
+  content: "“";
+  position: absolute;
+  left: 14px;
+  top: 4px;
+  color: var(--orange);
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.testimonial .detail {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.evidence-note {
+  margin: 22px 0 0;
+  padding: 14px 18px;
+  border-left: 4px solid var(--orange);
+  background: rgba(255,255,255,.72);
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.media-stack {
+  display: grid;
+  gap: 18px;
+}
+
+.media-body .media-label {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+@media (max-width: 980px){
+       .navlinks a:not(.btn){
+display:none}
+       .hero-grid,.method-grid,.evidence-grid,.about,.free-grid{
+grid-template-columns:1fr}
+       .hero{
+padding-top:48px}
+       .hero-photo{
+max-width:620px;
+margin:auto}
+       .areas{
+grid-template-columns:repeat(2,minmax(0,1fr))}
+       .steps{
+grid-template-columns:repeat(3,1fr)}
+       .cta-box{
+align-items:flex-start;
+flex-direction:column}
+       .cta-actions{
+min-width:0}
+     }
+
+	@media (max-width: 640px) {
+  .hero .actions {
+    flex-wrap: wrap;
+  }
+
+  .hero .actions .btn {
+    white-space: normal;
+  }
+
+  .container {
+    width: min(100% - 24px, var(--max));
+  }
+
+  .nav {
+    height: 68px;
+  }
+
+  .brand img {
+    height: 46px;
+  }
+
+  .navlinks .btn {
+    padding: 0 14px;
+    min-height: 42px;
+    font-size: 13px;
+  }
+
+  h1 {
+    font-size: 43px;
+  }
+
+  .hero-copy {
+    font-size: 17px;
+  }
+
+  section {
+    padding: 64px 0;
+  }
+
+  .services,
+  .areas,
+  .free-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .area {
+    min-height: auto;
+  }
+
+  .free {
+    padding: 24px;
+  }
+
+  .cta-box {
+    padding: 28px 22px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .actions,
+  .cta-actions {
+    width: 100%;
+  }
+
+  .mini-badge {
+    position: static;
+    margin-top: 14px;
+    max-width: none;
+  }
+}
+  </style>
+ </head>
+ <body>
+  <header class="topbar">
+   <div class="container nav">
+    <a aria-label="M&eacute;todo PAPEC+R" class="brand" href="#inicio">
+     <img alt="Logo PAPEC+R" src="logo-papec.png"/>
+    </a>
+    <nav aria-label="Navega&ccedil;&atilde;o principal" class="navlinks">
+     <a href="#metodo">
+      M&eacute;todo
+     </a>
+     <a href="#servicos">
+      Servi&ccedil;os
+     </a>
+     <a href="#areas">
+      &Aacute;reas
+     </a>
+     <a href="#evidencias">
+      Depoimentos
+     </a>
+     <a href="#alexandre">
+      Alexandre
+     </a>
+     <a class="btn btn-primary" href="https://wa.me/5514981350065?text=Ol&aacute;%20Alexandre,%20conheci%20o%20M&eacute;todo%20PAPEC%2BR%20pelo%20site%20e%20gostaria%20de%20conversar." rel="noopener" target="_blank">
+      Falar no WhatsApp
+     </a>
+    </nav>
+   </div>
+  </header>
+  <main>
+   <section class="hero" id="inicio">
+    <div class="container hero-grid">
+     <div>
+      <div class="eyebrow">
+       <span class="dot">
+       </span>
+       M&eacute;todo PAPEC+R &middot; Desenvolvimento Humano
+      </div>
+      <h1>
+       Voc&ecirc; sabe o que precisa
+       <span class="orange">
+        mudar.
+       </span>
+       <br/>
+       Mas por que &eacute; t&atilde;o dif&iacute;cil transformar isso em
+       <span class="green">
+        a&ccedil;&atilde;o?
+       </span>
+      </h1>
+      <p class="hero-copy">
+       O M&eacute;todo PAPEC+R &eacute; um caminho de desenvolvimento humano com prop&oacute;sito, consci&ecirc;ncia, dire&ccedil;&atilde;o e a&ccedil;&atilde;o.
+      </p>
+      <div class="hero-name">
+       Alexandre Soubihe Previdello
+      </div>
+      <p class="hero-role">
+       Criador do M&eacute;todo PAPEC+R
+      </p>
+      <div class="actions">
+       <a class="btn btn-primary" href="#mentoria">
+        Conhecer a Mentoria
+       </a>
+       <a class="btn btn-outline" href="https://wa.me/5514981350065?text=Ol&aacute;%20Alexandre,%20quero%20conhecer%20melhor%20o%20M&eacute;todo%20PAPEC%2BR." rel="noopener" target="_blank">
+        Falar com Alexandre
+       </a>
+       <a class="btn btn-outline" href="#alexandre">
+        Quem &eacute; o Alexandre
+       </a>
+      </div>
+     </div>
+     <div class="hero-photo">
+      <div class="photo-shell">
+       <img alt="Alexandre Soubihe Previdello" src="alexandre.png"/>
+      </div>
+      <div class="mini-badge">
+       M&eacute;todo autoral &middot; escuta &middot; dire&ccedil;&atilde;o &middot; acompanhamento
+      </div>
+     </div>
+    </div>
+   </section>
+   <section id="metodo">
+    <div class="container">
+     <div class="section-head">
+      <div class="kicker">
+       O m&eacute;todo
+      </div>
+      <h2>
+       Percep&ccedil;&atilde;o sem movimento n&atilde;o sustenta mudan&ccedil;a.
+      </h2>
+      <p>
+       O PAPEC+R organiza o desenvolvimento em etapas claras, permitindo compreender o momento atual, definir dire&ccedil;&atilde;o, agir, checar e reconhecer a evolu&ccedil;&atilde;o.
+      </p>
+     </div>
+     <div class="method-grid">
+      <div class="card method-card">
+       <h3>
+        Um caminho guiado em 6 movimentos
+       </h3>
+       <p>
+        Prop&oacute;sito e Recompensa marcam in&iacute;cio e reconhecimento. An&aacute;lise, Planejamento, Execu&ccedil;&atilde;o e Checagem formam o ciclo de desenvolvimento.
+       </p>
+       
+       <div class="papec-highlight" aria-label="Etapas do método PAPEC+R">
+          <div class="papec-item">
+            <div class="papec-letter">P</div>
+            <div class="papec-name">Propósito</div>
+            <div class="papec-desc">Onde quero chegar</div>
+          </div>
+        
+          <div class="papec-item">
+            <div class="papec-letter">A</div>
+            <div class="papec-name">Análise</div>
+            <div class="papec-desc">Onde estou agora</div>
+          </div>
+        
+          <div class="papec-item">
+            <div class="papec-letter">P</div>
+            <div class="papec-name">Planejamento</div>
+            <div class="papec-desc">Como vou construir</div>
+          </div>
+        
+          <div class="papec-item">
+            <div class="papec-letter">E</div>
+            <div class="papec-name">Execução</div>
+            <div class="papec-desc">Transformar em ação</div>
+          </div>
+        
+          <div class="papec-item">
+            <div class="papec-letter">C</div>
+            <div class="papec-name">Checagem</div>
+            <div class="papec-desc">Acompanhar e ajustar</div>
+          </div>
+        
+          <div class="papec-item">
+            <div class="papec-letter plus">+R</div>
+            <div class="papec-name">Recompensa</div>
+            <div class="papec-desc">Reconhecer a evolução</div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="card method-quote">
+       <strong>
+        &ldquo;Primeiro clareza. Depois dire&ccedil;&atilde;o. Ent&atilde;o a&ccedil;&atilde;o.&rdquo;
+       </strong>
+       <p>
+        A mentoria n&atilde;o promete m&aacute;gica. Ela oferece m&eacute;todo e acompanhamento para quem deseja se desenvolver de verdade.
+       </p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section class="section-soft" id="servicos">
+    <div class="container">
+     <div class="section-head">
+      <div class="kicker">
+       Servi&ccedil;os
+      </div>
+      <h2>
+       Duas formas de viver o PAPEC+R
+      </h2>
+      <p>
+       O m&eacute;todo pode ser apresentado para grupos ou aplicado de forma individual em uma jornada de desenvolvimento.
+      </p>
+     </div>
+     <div class="services">
+      <article class="service">
+       <div class="icon">
+        🎙
+       </div>
+       <h3>
+        Palestras
+       </h3>
+       <p>
+        Encontros com conte&uacute;do provocativo, reflex&atilde;o, consci&ecirc;ncia e direcionamento pr&aacute;tico.
+       </p>
+       <ul>
+        <li>
+         Empresas, escolas, projetos e eventos
+        </li>
+        <li>
+         Conte&uacute;do adaptado ao p&uacute;blico
+        </li>
+        <li>
+         Experi&ecirc;ncia din&acirc;mica e aplic&aacute;vel
+        </li>
+       </ul>
+      </article>
+      <article class="service" id="mentoria">
+       <div class="icon">
+        ◎
+       </div>
+       <h3>
+        Mentoria PAPEC+R
+       </h3>
+       <p>
+        Processo estruturado de desenvolvimento humano, com escuta, ferramentas e acompanhamento direcionado ao prop&oacute;sito de cada mentorado.
+       </p>
+       <ul>
+        <li>
+         M&eacute;todo autoral
+        </li>
+        <li>
+         Atendimento personalizado
+        </li>
+        <li>
+         Desenvolvimento com evid&ecirc;ncias e checagem
+        </li>
+       </ul>
+      </article>
+     </div>
+    </div>
+   </section>
+   <section id="areas">
+     <div class="container">
+   
+       <div class="section-head">
+         <div class="kicker">
+           Mentoria PAPEC+R
+         </div>
+   
+         <h2>
+           Em quais áreas o PAPEC+R pode ajudar você a se desenvolver?
+         </h2>
+   
+         <p>
+           Cada jornada é única. O método pode ser direcionado conforme
+           o propósito, o momento e a necessidade de cada pessoa.
+         </p>
+       </div>
+   
+       <div class="areas areas-premium">
+   
+         <article class="area area-premium-card">
+           
+           <div class="area-icon">
+             ♡
+           </div>
+   
+           <h3>
+             Autoconhecimento e clareza emocional
+           </h3>
+   
+           <strong class="area-impact">
+             Entender o que você sente para escolher melhor como agir.
+           </strong>
+   
+           <p>
+             Compreender emoções, reações e padrões para fazer escolhas
+             mais conscientes.
+           </p>
+         </article>
+   
+         <article class="area area-premium-card">
+           
+           <div class="area-icon">
+             ◉
+           </div>
+   
+           <h3>
+             Empatia e relacionamentos
+           </h3>
+   
+           <strong class="area-impact">
+             Melhorar relações começa pela forma como você percebe e se comunica.
+           </strong>
+   
+           <p>
+             Compreender o outro, fortalecer vínculos e desenvolver
+             uma comunicação mais consciente.
+           </p>
+         </article>
+   
+         <article class="area area-premium-card">
+           
+           <div class="area-icon">
+             ↗
+           </div>
+   
+           <h3>
+             Adaptabilidade e equilíbrio
+           </h3>
+   
+           <strong class="area-impact">
+             Nem tudo está sob seu controle. Sua resposta, muitas vezes, está.
+           </strong>
+   
+           <p>
+             Lidar melhor com mudanças, desafios e situações inesperadas
+             com mais leveza e flexibilidade.
+           </p>
+         </article>
+   
+         <article class="area area-premium-card">
+           
+           <div class="area-icon">
+             ◎
+           </div>
+   
+           <h3>
+             Propósito, direção e foco
+           </h3>
+   
+           <strong class="area-impact">
+             Saber onde quer chegar muda a forma como você escolhe o caminho.
+           </strong>
+   
+           <p>
+             Definir objetivos, organizar prioridades e transformar
+             intenção em ação.
+           </p>
+         </article>
+   
+         <article class="area area-premium-card">
+           
+           <div class="area-icon">
+             ⌁
+           </div>
+   
+           <h3>
+             Ressignificação da sua história
+           </h3>
+   
+           <strong class="area-impact">
+             O passado não muda. A forma como ele influencia o presente pode mudar.
+           </strong>
+   
+           <p>
+             Olhar para experiências vividas com novos significados
+             e seguir com mais leveza e propósito.
+           </p>
+         </article>
+   
+       </div>
+   
+     </div>
+   </section>
+   
+
+
+
+
+   <section class="section-soft" id="evidencias">
+    <div class="container">
+     <div class="section-head">
+      <div class="kicker">
+       Hist&oacute;rias que viraram evid&ecirc;ncias
+      </div>
+      <h2>
+       Quando a mudan&ccedil;a come&ccedil;a a aparecer na vida.
+      </h2>
+      <p>
+       Relatos reais sobre desenvolvimento, clareza, dire&ccedil;&atilde;o e transforma&ccedil;&atilde;o durante a caminhada.
+      </p>
+     </div>
+     <div class="evidence-grid">
+      <div class="testimonial-list">
+       <article class="testimonial">
+        <blockquote>
+         &ldquo;Tenho me sentido mais resolutiva, confiante e leve.&rdquo;
+        </blockquote>
+        <p class="detail">
+         A mentoria tem me ajudado a olhar para as minhas emo&ccedil;&otilde;es com mais clareza, entender melhor minhas rea&ccedil;&otilde;es e desenvolver confian&ccedil;a para tomar decis&otilde;es e me posicionar com mais seguran&ccedil;a.
+        </p>
+        <footer>
+         Relato de mentorada
+        </footer>
+       </article>
+       <article class="testimonial">
+        <blockquote>
+         &ldquo;Hoje consigo viver com mais leveza e equil&iacute;brio.&rdquo;
+        </blockquote>
+        <p class="detail">
+         Passei a entender melhor minhas emo&ccedil;&otilde;es, reconhecer padr&otilde;es da minha hist&oacute;ria e perceber responsabilidades que eu carregava sem necessidade.
+        </p>
+        <footer>
+         Relato de mentorado
+        </footer>
+       </article>
+       <article class="testimonial">
+        <blockquote>
+         &ldquo;A mentoria me ajudou a transformar inten&ccedil;&atilde;o em a&ccedil;&atilde;o.&rdquo;
+        </blockquote>
+        <p class="detail">
+         Aprendi a organizar melhor minhas prioridades, delegar responsabilidades, estabelecer limites e concluir aquilo que come&ccedil;o.
+        </p>
+        <footer>
+         Relato de mentorado
+        </footer>
+       </article>
+       <article class="testimonial">
+        <blockquote>
+         &ldquo;Essa melhora dela, esse foco dela, foi justamente depois da sua mentoria.&rdquo;
+        </blockquote>
+        <p class="detail">
+         Relato espont&acirc;neo de um pai ao perceber mudan&ccedil;as na filha, tamb&eacute;m reconhecidas pela escola ao longo do processo.
+        </p>
+        <footer>
+         Relato de familiar
+        </footer>
+       </article>
+      </div>
+      <div class="media-stack">
+       <article class="media-card">
+        <img alt="Uma carta recebida ap&oacute;s uma etapa da Mentoria PAPEC+R" src="carta.png"/>
+        <div class="media-body">
+         <span class="media-label">
+          Relato espont&acirc;neo
+         </span>
+         <h3>
+          Uma carta que recebi
+         </h3>
+         <p>
+          Um relato sobre prop&oacute;sito, limites, confian&ccedil;a, rejei&ccedil;&atilde;o e reconhecimento das pr&oacute;prias conquistas.
+         </p>
+        </div>
+       </article>
+       <article class="media-card">
+        <img alt="Um &aacute;udio recebido de um pai sobre a evolu&ccedil;&atilde;o da filha ap&oacute;s uma etapa da Mentoria PAPEC+R" src="audio.png"/>
+        <div class="media-body">
+         <span class="media-label">
+          Relato de familiar
+         </span>
+         <h3>
+          Um &aacute;udio que recebi
+         </h3>
+         <p>
+          Um relato espont&acirc;neo de um pai sobre mudan&ccedil;as percebidas pela fam&iacute;lia e tamb&eacute;m pela escola.
+         </p>
+        </div>
+       </article>
+      </div>
+     </div>
+     <div class="evidence-note">
+      Por respeito ao sigilo e &agrave; privacidade, algumas identidades foram preservadas. Os relatos apresentados s&atilde;o reais e reproduzem experi&ecirc;ncias compartilhadas espontaneamente durante ou ap&oacute;s o processo.
+     </div>
+    </div>
+   </section>
+   <section id="alexandre">
+    <div class="container about">
+     <div class="about-photo">
+      <img alt="Alexandre Soubihe Previdello" src="alexandre.png"/>
+     </div>
+     <div class="about-copy">
+      <div class="kicker">
+       Quem conduz o processo
+      </div>
+      <h2>
+       Alexandre Soubihe Previdello
+      </h2>
+      <p>
+       Alexandre desenvolveu o M&eacute;todo PAPEC+R a partir da integra&ccedil;&atilde;o entre desenvolvimento humano, escuta, m&eacute;todo e acompanhamento. Sua trajet&oacute;ria re&uacute;ne experi&ecirc;ncias em neuroci&ecirc;ncia, tecnologia, gest&atilde;o, PNL, hipnose na pr&aacute;tica cl&iacute;nica e projetos de impacto humano.
+      </p>
+      <p>
+       O foco n&atilde;o &eacute; oferecer respostas prontas, mas criar um caminho estruturado para que cada pessoa compreenda melhor seus padr&otilde;es, reconhe&ccedil;a seus recursos e transforme inten&ccedil;&atilde;o em movimento.
+      </p>
+      <div class="chips">
+       <span class="chip">
+        Neuroci&ecirc;ncia
+       </span>
+       <span class="chip">
+        PNL
+       </span>
+       <span class="chip">
+        Hipnose na pr&aacute;tica cl&iacute;nica
+       </span>
+       <span class="chip">
+        Gest&atilde;o
+       </span>
+       <span class="chip">
+        Tecnologia
+       </span>
+       <span class="chip">
+        Projetos sociais
+       </span>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section class="section-soft" id="fase-inicial">
+    <div class="container">
+     <div class="free">
+      <div class="free-grid">
+       <div>
+        <div class="kicker">
+         Primeiro clareza. Depois decis&atilde;o.
+        </div>
+        <h2>
+         Comece pela fase inicial da Mentoria PAPEC+R
+        </h2>
+        <p>
+         Antes de decidir se deseja continuar, voc&ecirc; pode conhecer as duas primeiras etapas do m&eacute;todo e receber um Mapa de Perfil Comportamental.
+        </p>
+        <div class="free-steps">
+         <div class="free-step">
+          <strong>
+           1&ordf; etapa &mdash; Prop&oacute;sito
+          </strong>
+          <span>
+           Identificar o que realmente move voc&ecirc;.
+          </span>
+         </div>
+         <div class="free-step">
+          <strong>
+           2&ordf; etapa &mdash; An&aacute;lise
+          </strong>
+          <span>
+           Compreender perfil, padr&otilde;es e pontos de aten&ccedil;&atilde;o.
+          </span>
+         </div>
+        </div>
+        <p>
+         <strong>
+          Inclui o Mapa de Perfil Comportamental.
+         </strong>
+         Depois dessa fase, voc&ecirc; decide se deseja seguir.
+        </p>
+        <a class="btn btn-primary" href="https://wa.me/5514981350065?text=Ol&aacute;%20Alexandre,%20quero%20conhecer%20a%20fase%20inicial%20da%20Mentoria%20PAPEC%2BR." rel="noopener" target="_blank">
+         Quero conhecer a fase inicial
+        </a>
+       </div>
+       <div class="free-badge">
+        <div>
+         <strong>
+          Conhe&ccedil;a antes de decidir.
+         </strong>
+         <span>
+          Prop&oacute;sito + An&aacute;lise + Perfil Comportamental
+         </span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section class="cta" id="contato">
+    <div class="container">
+     <div class="cta-box">
+      <div>
+       <h2>
+        Quer transformar percep&ccedil;&atilde;o em a&ccedil;&atilde;o?
+       </h2>
+       <p>
+        Converse diretamente com Alexandre e conhe&ccedil;a o pr&oacute;ximo passo.
+       </p>
+      </div>
+      <div class="cta-actions">
+       <a class="btn btn-primary" href="https://wa.me/5514981350065?text=Ol&aacute;%20Alexandre,%20vim%20pelo%20site%20do%20M&eacute;todo%20PAPEC%2BR." rel="noopener" style="background:#168c44" target="_blank">
+        WhatsApp
+       </a>
+       <a class="btn btn-outline" href="https://www.instagram.com/alexandrexandelebauru/" rel="noopener" style="background:white" target="_blank">
+        Instagram
+       </a>
+      </div>
+     </div>
+    </div>
+   </section>
+  </main>
+  <footer>
+   <div class="container footer-row">
+    <div>
+     <strong style="color:var(--green)">
+      PAPEC+R
+     </strong>
+     &middot; Mentoria em Desenvolvimento Humano
+    </div>
+    <div>
+     Desenvolvimento humano com consci&ecirc;ncia, dire&ccedil;&atilde;o e a&ccedil;&atilde;o.
+    </div>
+   </div>
+  </footer>
+  <script crossorigin="anonymous" data-cf-beacon='{"version":"2024.11.0","token":"e7b6fe0638cf4b1caeefc87a1e72df71","r":1}' integrity="sha512-d9sL6GJLXn6fInD1+TVXhTcQOsmxeHfmHAvwGDIxp5TO+uo1fiWW7mHomMj4MLRlCsJDTqXzWLHJFFlPCEIj/A==" src="https://static.cloudflareinsights.com/beacon.min.js/v3d52b47920f24c319d37e2661827c42b1787588026925" type="module">
+  </script>
+ </body>
+</html>
