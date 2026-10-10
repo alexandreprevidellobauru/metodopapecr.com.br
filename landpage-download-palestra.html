@@ -31,6 +31,7 @@ export default {
         const nome = String(dados.nome || "").trim();
         const email = String(dados.email || "").trim();
         const whatsapp = String(dados.whatsapp || "").trim();
+        const redeSocial = String(dados.redeSocial || "").trim();
         const empresa = String(dados.empresa || "").trim();
         const autorizacao = dados.autorizacao === true;
 
@@ -156,6 +157,7 @@ export default {
                   nome,
                   email,
                   whatsapp,
+                  redeSocial,
                   empresa,
                 }),
               }),
@@ -177,7 +179,7 @@ export default {
         return json({
           success: true,
           message:
-            "Material enviado com sucesso!",
+            "Material enviado com sucesso. O download já está disponível.",
         });
       } catch (error) {
         console.error(error);
@@ -481,6 +483,11 @@ ${escaparHtml(dados.whatsapp)}
 </p>
 
 <p>
+<strong>Rede social:</strong><br>
+${escaparHtml(dados.redeSocial || "Não informado")}
+</p>
+
+<p>
 <strong>Empresa / Instituição:</strong><br>
 ${escaparHtml(dados.empresa || "Não informado")}
 </p>
@@ -538,7 +545,7 @@ Material da Palestra | Método PAPEC+R
 
 <meta
 name="description"
-content="Receba o material complementar da palestra Método PAPEC+R."
+content="Receba por e-mail e baixe o material complementar da palestra Método PAPEC+R."
 />
 
 
@@ -1085,6 +1092,26 @@ button:disabled {
 
 }
 
+.download-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  margin-top: 12px;
+  padding: 0 22px;
+  border-radius: 9px;
+  background: #f4b942;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.download-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(244,185,66,.3);
+}
+
 
 /* ============================
    RESPONSIVO
@@ -1218,8 +1245,8 @@ o próprio trabalho.
 
 <p class="intro">
 
-Preencha seus dados e receba gratuitamente
-em seu e-mail o material complementar da palestra
+Preencha seus dados para receber gratuitamente
+o material complementar por e-mail e baixar o arquivo após o envio.
 
 <strong>
 Método PAPEC+R – Mentoria em Desenvolvimento Humano.
@@ -1326,7 +1353,7 @@ Receba seu material
 <div class="card-subtitle">
 
 Informe seus dados abaixo.
-O material será enviado diretamente para seu e-mail.
+O material será enviado para seu e-mail e ficará disponível para download.
 
 </div>
 
@@ -1346,6 +1373,23 @@ id="nome"
 name="nome"
 placeholder="Como podemos chamar você?"
 required
+/>
+
+</div>
+
+
+<div class="campo">
+
+<label for="redeSocial">
+Rede social
+</label>
+
+<input
+type="text"
+id="redeSocial"
+name="redeSocial"
+placeholder="@seuperfil ou link do perfil (opcional)"
+maxlength="150"
 />
 
 </div>
@@ -1426,7 +1470,7 @@ type="submit"
 id="botaoEnviar"
 >
 
-RECEBER MATERIAL DA PALESTRA
+ENVIAR E BAIXAR MATERIAL
 
 </button>
 
@@ -1469,20 +1513,28 @@ class="sucesso-box"
 
 
 <h2>
-Material enviado!
+Material liberado!
 </h2>
 
 
 <p>
 
-Confira sua caixa de entrada.
+O download do material deve começar automaticamente.
 
 <br><br>
 
-Enviamos o material da palestra
-para o e-mail informado.
+Também enviamos uma cópia para o e-mail informado.
 
 </p>
+
+<a
+id="linkDownload"
+class="download-link"
+href="/material-palestra.pdf"
+download="material-palestra.pdf"
+>
+BAIXAR MATERIAL DA PALESTRA
+</a>
 
 
 <p>
@@ -1523,6 +1575,9 @@ const areaFormulario =
 
 const areaSucesso =
   document.getElementById("areaSucesso");
+
+const linkDownload =
+  document.getElementById("linkDownload");
 
 
 // =====================================
@@ -1632,6 +1687,11 @@ form.addEventListener(
           .getElementById("whatsapp")
           .value,
 
+      redeSocial:
+        document
+          .getElementById("redeSocial")
+          .value,
+
       empresa:
         document
           .getElementById("empresa")
@@ -1686,6 +1746,8 @@ form.addEventListener(
       areaSucesso.style.display =
         "block";
 
+      linkDownload.click();
+
 
     }
 
@@ -1703,7 +1765,7 @@ form.addEventListener(
         false;
 
       botao.innerHTML =
-        "RECEBER MATERIAL DA PALESTRA";
+        "ENVIAR E BAIXAR MATERIAL";
 
     }
 
