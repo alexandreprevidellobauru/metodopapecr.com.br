@@ -1,8 +1,14 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "landpage-metodopapecr",
+  "main": "./site-worker.js",
   "compatibility_date": "2026-10-10",
+  "keep_vars": true,
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+  "vars": {
+    "ADMIN_EMAIL": "alexandreprevidello@gmail.com"
   }
 }
