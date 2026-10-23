@@ -99,7 +99,7 @@ async function receberInscricao(request, env) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: env.EMAIL_REMETENTE || "PAPEC+R <material@mentoriapapecr.com.br>",
+      from: env.EMAIL_REMETENTE || "PAPEC+R <material@metodopapecr.com.br>",
       to: [env.ADMIN_EMAIL || "alexandreprevidello@gmail.com"],
       reply_to: inscricao.email,
       subject: `Nova inscrição - ${CURSO} · ${DATA_CURSO} · ${inscricao.nome}`,

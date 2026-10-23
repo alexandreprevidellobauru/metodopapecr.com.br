@@ -9,6 +9,7 @@
     "binding": "ASSETS"
   },
   "vars": {
-    "ADMIN_EMAIL": "alexandreprevidello@gmail.com"
+    "ADMIN_EMAIL": "alexandreprevidello@gmail.com",
+    "EMAIL_REMETENTE": "PAPEC+R <material@metodopapecr.com.br>"
   }
 }
