@@ -98,7 +98,7 @@ export default {
             body: JSON.stringify({
               from:
                 env.EMAIL_REMETENTE ||
-                "PAPEC+R <material@mentoriapapecr.com.br>",
+                "PAPEC+R <material@metodopapecr.com.br>",
 
               to: [email],
 
@@ -146,7 +146,7 @@ export default {
               body: JSON.stringify({
                 from:
                   env.EMAIL_REMETENTE ||
-                  "PAPEC+R <material@mentoriapapecr.com.br>",
+                  "PAPEC+R <material@metodopapecr.com.br>",
 
                 to: [env.EMAIL_ADMIN],
 
@@ -238,7 +238,7 @@ function gerarEmailParticipante(nome, env) {
 
   const linkMaterial =
     env.LINK_MATERIAL ||
-    "https://www.mentoriapapecr.com.br/material-palestra.pdf";
+    "https://www.metodopapecr.com.br/material-palestra.pdf";
 
   return `
 <!DOCTYPE html>
