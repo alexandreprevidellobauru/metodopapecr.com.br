@@ -548,6 +548,10 @@ name="description"
 content="Receba por e-mail e baixe o material complementar da palestra Método PAPEC+R."
 />
 
+<link rel="icon" href="/cursoiaafavordoseutempoeproposito/assets/logo-papecr.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 
 <style>
 
@@ -564,20 +568,14 @@ body {
   margin: 0;
 
   font-family:
-    Inter,
+    Figtree,
     Arial,
     Helvetica,
     sans-serif;
 
-  background:
-    linear-gradient(
-      145deg,
-      #07111f 0%,
-      #0f223c 55%,
-      #142b49 100%
-    );
+  background: #FAF8F3;
 
-  color: #ffffff;
+  color: #1B241D;
 
   min-height: 100vh;
 
@@ -622,20 +620,50 @@ body {
 
 .brand {
 
-  font-size: 38px;
+  display: flex;
 
-  font-weight: 800;
+  align-items: center;
 
-  letter-spacing: -1px;
+  gap: 12px;
 
   margin-bottom: 32px;
 
 }
 
 
-.brand span {
+.brand img {
 
-  color: #f4b942;
+  width: 52px;
+
+  height: 48px;
+
+  object-fit: contain;
+
+}
+
+
+.brand-nome {
+
+  display: block;
+
+  font-family: Archivo, Arial, sans-serif;
+
+  font-weight: 800;
+
+  font-size: 18px;
+
+  color: #1E4A2C;
+
+}
+
+
+.brand-sub {
+
+  display: block;
+
+  font-size: 13px;
+
+  color: #5A6359;
 
 }
 
@@ -646,43 +674,57 @@ body {
 
   padding: 8px 14px;
 
-  border: 1px solid rgba(255,255,255,.15);
+  border: 1.5px solid #1E4A2C;
 
-  background: rgba(255,255,255,.06);
+  color: #1E4A2C;
 
   border-radius: 100px;
 
-  font-size: 13px;
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: .1em;
 
   margin-bottom: 22px;
 
 }
 
 h1 {
+  font-family: Archivo, Arial, sans-serif;
+  font-weight: 900;
+  color: #1E4A2C;
   font-size: 43px;
-  line-height: 1.08;
+  line-height: 1.05;
   margin: 0 0 22px;
-  letter-spacing: -1.5px;
+  letter-spacing: -.02em;
   max-width: 570px;
 }
 
 
 .destaque {
 
-  color: #f4b942;
+  color: #E2581A;
 
 }
 
 
 .intro {
 
-  color: #cbd5e1;
+  color: #4A5248;
 
   font-size: 18px;
 
   line-height: 1.7;
 
   max-width: 530px;
+
+}
+
+
+.intro strong {
+
+  color: #1E4A2C;
 
 }
 
@@ -704,25 +746,9 @@ h1 {
   align-items: center;
   gap: 12px;
   padding: 14px;
-  border-radius: 12px;
-  background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.10);
-}
-
-
-.conceito-item strong {
-  display: block;
-  color: #f4b942;
-  font-size: 14px;
-  line-height: 1.15;
-  margin-bottom: 4px;
-}
-
-.conceito-item span {
-  display: block;
-  color: #ffffff;
-  font-size: 12px;
-  line-height: 1.35;
+  border-radius: 16px;
+  background: #FFFFFF;
+  border: 1px solid #E6E1D6;
 }
 .conceito-icone {
 
@@ -740,9 +766,9 @@ h1 {
 
   justify-content: center;
 
-  background: #f4b942;
+  background: #E2581A;
 
-  color: #0f172a;
+  color: #FFFFFF;
 
   font-size: 22px;
 
@@ -755,9 +781,15 @@ h1 {
 
   display: block;
 
-  color: #f4b942;
+  font-family: Archivo, Arial, sans-serif;
+
+  font-weight: 800;
+
+  color: #1E4A2C;
 
   font-size: 15px;
+
+  line-height: 1.15;
 
   margin-bottom: 4px;
 
@@ -768,7 +800,7 @@ h1 {
 
   display: block;
 
-  color: #e2e8f0;
+  color: #5A6359;
 
   font-size: 13px;
 
@@ -795,11 +827,13 @@ h1 {
 
   padding: 8px 11px;
 
-  border-radius: 6px;
+  border-radius: 100px;
 
-  background: rgba(255,255,255,.08);
+  background: #EFEADF;
 
-  color: #e2e8f0;
+  color: #1E4A2C;
+
+  font-weight: 600;
 
 }
 
@@ -812,19 +846,27 @@ h1 {
 
   background: #ffffff;
 
-  color: #1e293b;
+  color: #1B241D;
 
-  border-radius: 20px;
+  border: 1px solid #E6E1D6;
+
+  border-radius: 24px;
 
   padding: 35px;
 
   box-shadow:
-    0 30px 70px rgba(0,0,0,.28);
+    0 24px 60px rgba(30,74,44,.10);
 
 }
 
 
 .card h2 {
+
+  font-family: Archivo, Arial, sans-serif;
+
+  font-weight: 800;
+
+  color: #1E4A2C;
 
   font-size: 26px;
 
@@ -835,7 +877,7 @@ h1 {
 
 .card-subtitle {
 
-  color: #64748b;
+  color: #5A6359;
 
   line-height: 1.5;
 
@@ -863,7 +905,7 @@ label {
 
   margin-bottom: 7px;
 
-  color: #334155;
+  color: #1B241D;
 
 }
 
@@ -874,9 +916,13 @@ input {
 
   height: 50px;
 
-  border-radius: 8px;
+  border-radius: 10px;
 
-  border: 1px solid #cbd5e1;
+  border: 1px solid #D9D3C6;
+
+  background: #FFFFFF;
+
+  font-family: inherit;
 
   padding: 0 14px;
 
@@ -891,10 +937,10 @@ input {
 
 input:focus {
 
-  border-color: #f4b942;
+  border-color: #1E4A2C;
 
   box-shadow:
-    0 0 0 3px rgba(244,185,66,.15);
+    0 0 0 3px rgba(30,74,44,.15);
 
 }
 
@@ -909,7 +955,7 @@ input:focus {
 
   margin: 20px 0;
 
-  color: #64748b;
+  color: #5A6359;
 
   font-size: 12px;
 
@@ -923,6 +969,8 @@ input:focus {
   width: 17px;
 
   height: 17px;
+
+  accent-color: #1E4A2C;
 
   flex: 0 0 auto;
 
@@ -939,17 +987,19 @@ button {
 
   min-height: 54px;
 
-  border-radius: 9px;
+  border-radius: 100px;
 
   padding: 13px;
 
-  background: #f4b942;
+  background: #E2581A;
 
-  color: #111827;
+  color: #FFFFFF;
+
+  font-family: Figtree, Arial, sans-serif;
 
   font-size: 15px;
 
-  font-weight: 800;
+  font-weight: 700;
 
   cursor: pointer;
 
@@ -963,7 +1013,7 @@ button:hover {
   transform: translateY(-1px);
 
   box-shadow:
-    0 8px 18px rgba(244,185,66,.3);
+    0 8px 18px rgba(226,88,26,.3);
 
 }
 
@@ -983,7 +1033,7 @@ button:disabled {
 
   text-align: center;
 
-  color: #94a3b8;
+  color: #8A8F86;
 
   font-size: 11px;
 
@@ -1064,9 +1114,9 @@ button:disabled {
 
   border-radius: 50%;
 
-  background: #dcfce7;
+  background: #E7EFE8;
 
-  color: #16a34a;
+  color: #1E4A2C;
 
   font-size: 32px;
 
@@ -1086,7 +1136,7 @@ button:disabled {
 
 .sucesso-box p {
 
-  color: #64748b;
+  color: #5A6359;
 
   line-height: 1.7;
 
@@ -1099,17 +1149,17 @@ button:disabled {
   min-height: 50px;
   margin-top: 12px;
   padding: 0 22px;
-  border-radius: 9px;
-  background: #f4b942;
-  color: #111827;
+  border-radius: 100px;
+  background: #E2581A;
+  color: #FFFFFF;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   text-decoration: none;
 }
 
 .download-link:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(244,185,66,.3);
+  box-shadow: 0 8px 18px rgba(226,88,26,.3);
 }
 
 
@@ -1219,7 +1269,12 @@ button:disabled {
 
 <div class="brand">
 
-PAPEC<span>+R</span>
+<img src="/cursoiaafavordoseutempoeproposito/assets/logo-papecr.png" alt="Logo PAPEC+R">
+
+<div>
+<span class="brand-nome">PAPEC+R</span>
+<span class="brand-sub">Mentoria em Desenvolvimento Humano</span>
+</div>
 
 </div>
 
